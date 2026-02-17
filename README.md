@@ -8,7 +8,7 @@ The database supports a multi-channel e-commerce system covering sales and suppl
 
 ## Database Domains Reference
 
-The EVP database is organized into **46 domains**, each representing a functional area of the system. The table below lists all domains with their abbreviations and documentation priority:
+The EVP database is organized into **37 domains**, each representing a functional area of the system. The table below lists all domains with their abbreviations and documentation priority:
 
 | Abbreviation | Domain | Importance |
 |--------------|--------|------------|
