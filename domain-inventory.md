@@ -15,7 +15,7 @@ The **Inventory** domain represents the product catalog and stock management sys
 - **Abbreviation**: `inv`
 - **Importance**: **High Priority**
 - **Table Count**: 51 tables
-- **Documentation Status**: 6 detailed, 45 pending
+- **Documentation Status**: 9 detailed, 42 pending
 - **Related Domains**: Channel, Orders, Catalog Sources
 
 ---
@@ -25,93 +25,122 @@ The **Inventory** domain represents the product catalog and stock management sys
 The Inventory domain contains 51 tables organized by function:
 
 ### Core Item Management ⭐ Documented in Detail
-1. evp_inv_Item
-2. evp_inv_ItemCode
-3. evp_inv_SalesItemCode
-4. evp_inv_SupplyItemCode
-5. evp_inv_ItemAttribute
-6. evp_inv_ItemAvailability
+1. evp_inv_Item - Base product master
+2. evp_inv_ItemCode - Channel-specific listings
+3. evp_inv_SalesItemCode - Sales channel extension
+4. evp_inv_SupplyItemCode - Supply channel extension
+5. evp_inv_ItemAttribute - Flexible EAV attributes
+6. evp_inv_ItemAvailability - Location-based inventory
+7. evp_inv_ItemIdentifier - UPC/GTIN/ISBN/EAN codes
+8. evp_inv_Manufacturer - Manufacturer reference
+9. evp_inv_ItemUom - Unit of measure definitions
 
-### Item Identifiers & Classification
-7. evp_inv_ItemCodeHistory
-8. evp_inv_ItemIdentifier
-9. evp_inv_ItemImage
-10. evp_inv_ItemNote
-11. evp_inv_ItemPriceHistory
-12. evp_inv_ItemTag
-13. evp_inv_Manufacturer
-14. evp_inv_ManufacturerImage
+### Item Identifiers & Classification (Pending)
+10. evp_inv_ItemCodeHistory
+11. evp_inv_ItemImage
+12. evp_inv_ItemNote
+13. evp_inv_ItemPriceHistory
+14. evp_inv_ItemTag
+15. evp_inv_ManufacturerImage
 
-### Kits & Bundles
-15. evp_inv_KitComponent
-16. evp_inv_KitComponentMapping
+### Kits & Bundles (Pending)
+16. evp_inv_KitComponent
+17. evp_inv_KitComponentMapping
 
-### Purchase Orders & Procurement
-17. evp_inv_PurchaseOrder
-18. evp_inv_PurchaseOrderLine
-19. evp_inv_PurchaseOrderLineReceiving
-20. evp_inv_PurchaseOrderNote
-21. evp_inv_PurchaseOrderTerms
+### Purchase Orders & Procurement (Pending)
+18. evp_inv_PurchaseOrder
+19. evp_inv_PurchaseOrderLine
+20. evp_inv_PurchaseOrderLineReceiving
+21. evp_inv_PurchaseOrderNote
+22. evp_inv_PurchaseOrderTerms
 
-### Inventory Movements & Adjustments
-22. evp_inv_InventoryAllocation
-23. evp_inv_InventoryMovement
-24. evp_inv_InventoryMovementLine
-25. evp_inv_InventoryReceiving
-26. evp_inv_InventoryReceivingLine
-27. evp_inv_InventoryReservation
+### Inventory Movements & Adjustments (Pending)
+23. evp_inv_InventoryAllocation
+24. evp_inv_InventoryMovement
+25. evp_inv_InventoryMovementLine
+26. evp_inv_InventoryReceiving
+27. evp_inv_InventoryReceivingLine
+28. evp_inv_InventoryReservation
 
-### Inventory Holds & Tracking
-28. evp_inv_AvailabilityHold
-29. evp_inv_AvailabilityHoldCode
-30. evp_inv_LotControl
-31. evp_inv_SerialNumber
+### Inventory Holds & Tracking (Pending)
+29. evp_inv_AvailabilityHold
+30. evp_inv_AvailabilityHoldCode
+31. evp_inv_LotControl
+32. evp_inv_SerialNumber
 
-### Repricing & Market Data
-32. evp_inv_CompetitorPrice
-33. evp_inv_CompetitorProductMatch
-34. evp_inv_DataCollectionValue
-35. evp_inv_MarketData
-36. evp_inv_RepriceRule
-37. evp_inv_RepriceRuleBand
-38. evp_inv_RepriceRuleLevel
+### Repricing & Market Data (Pending)
+33. evp_inv_CompetitorPrice
+34. evp_inv_CompetitorProductMatch
+35. evp_inv_DataCollectionValue
+36. evp_inv_MarketData
+37. evp_inv_RepriceRule
+38. evp_inv_RepriceRuleBand
+39. evp_inv_RepriceRuleLevel
 
-### Planning & Demand
-39. evp_inv_DemandForecast
-40. evp_inv_ItemPlanning
-41. evp_inv_PlanningGroup
-42. evp_inv_Replenishment
-43. evp_inv_ReplenishmentLine
+### Planning & Demand (Pending)
+40. evp_inv_DemandForecast
+41. evp_inv_ItemPlanning
+42. evp_inv_PlanningGroup
+43. evp_inv_Replenishment
+44. evp_inv_ReplenishmentLine
 
-### Configuration & Reference
-44. evp_inv_CategorySchema
-45. evp_inv_ItemGroup
-46. evp_inv_ItemProfile
-47. evp_inv_ItemProfileItem
-48. evp_inv_PricingRule
-49. evp_inv_PurchaseOrderStatus
-50. evp_inv_QualityCheck
-51. evp_inv_UomConversion
+### Configuration & Reference (Pending)
+45. evp_inv_CategorySchema
+46. evp_inv_ItemGroup
+47. evp_inv_ItemProfile
+48. evp_inv_ItemProfileItem
+49. evp_inv_PricingRule
+50. evp_inv_PurchaseOrderStatus
+51. evp_inv_QualityCheck
+52. evp_inv_UomConversion
 
 ---
 
 ## Detailed Table Documentation
 
-*Full detailed documentation for the 6 core tables follows the standardized template with Purpose, Logical Role, Primary Keys, Foreign Keys, Key Attributes, Relationships, Business Rules, Query Patterns, and Implementation Notes.*
+### Core Item Tables
 
-### Core Tables
-- **evp_inv_Item**: Channel-agnostic product master records
-- **evp_inv_ItemCode**: Channel-specific listings with UOM variants
-- **evp_inv_SalesItemCode**: Sales channel extension (shared Id pattern)
-- **evp_inv_SupplyItemCode**: Supply channel extension (shared Id pattern)
-- **evp_inv_ItemAttribute**: Flexible EAV attributes for item codes
-- **evp_inv_ItemAvailability**: Location-based inventory tracking
+**evp_inv_Item** - Channel-agnostic product master records. The root entity containing SKU, title, manufacturer, and base product attributes.
+
+**evp_inv_ItemCode** - Channel-specific listings with UOM variants. Bridge between items and channels, parameterized by unit of measure.
+
+**evp_inv_SalesItemCode** - Sales channel extension (shared Id pattern). Contains pricing, replenishment, and demand metrics for sales channels.
+
+**evp_inv_SupplyItemCode** - Supply channel extension (shared Id pattern). Contains fulfillment configuration for supply channels.
+
+**evp_inv_ItemAttribute** - Flexible EAV attributes. Stores extensible key-value pairs for item codes (Color, Size, ASIN, etc.).
+
+**evp_inv_ItemAvailability** - Location-based inventory tracking. On-hand and allocated quantities per item per location.
+
+### Item Identifiers
+
+**evp_inv_ItemIdentifier** - Stores alternate product identifiers (UPC, GTIN, ISBN, EAN). Item-level (not channel-specific). Items commonly have multiple identifiers with one flagged as primary. Value stored as text to preserve leading zeros.
+
+*Key Query Pattern:*
+```sql
+-- Get primary identifier for item
+SELECT IdentifierType, Value
+FROM evp_inv_ItemIdentifier WITH (NOLOCK)
+WHERE ItemId = @ItemId AND Primary = 1;
+```
+
+**⚠️ Important:** UOM field exists in this table but is unused - never reference or join on it.
+
+### Manufacturer Reference
+
+**evp_inv_Manufacturer** - Master list of product manufacturers and brands. Referenced by evp_inv_Item.ManufacturerId. Primary fields are Name and Abbr. Description, ParentId, Verified, and Brand fields exist but are rarely used.
+
+### Unit of Measure
+
+**evp_inv_ItemUom** - Defines units of measure (EACH, PACK12, CASE, etc.) with quantities, weights, and dimensions. Code is the primary identifier (e.g., "EACH", "PACK12"). Quantity represents the multiplier (EACH=1, PACK12=12). No automatic conversion - ItemCodes are created at specific UOM levels. Suppliers may sell in PACK12 while sales channels sell in EACH. Stores "best quality" weights and dimensions aggregated from multiple sources.
+
+*Key Concept:* An item may have multiple UOMs. Supply channels and sales channels can use different UOMs for the same item.
 
 ---
 
 ## Additional Tables
 
-The remaining 45 tables in the Inventory domain are pending detailed documentation. These tables support:
+The remaining 42 tables in the Inventory domain are pending detailed documentation. These tables support:
 - Purchase order management and receiving
 - Inventory movements and adjustments
 - Lot control and serial number tracking
